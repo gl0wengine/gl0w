@@ -1,32 +1,29 @@
-//  _______    __       ______   __ __ __      
-// /______/\  /_/\     /_____/\ /_//_//_/\     
-// \::::__\/__\:\ \    \:::_ \ \\:\\:\\:\ \    
-//  \:\ /____/\\:\ \    \:\ \ \ \\:\\:\\:\ \   
-//   \:\\_  _\/ \:\ \____\:\ \ \ \\:\\:\\:\ \  
-//    \:\_\ \ \  \:\/___/\\:\_\ \ \\:\\:\\:\ \ 
-//     \_____\/   \_____\/ \_____\/ \_______\/                                            
-// -- vulkan-based graphics engine -- 
-
 #define GLFW_INCLUDE_VULKAN
+#include <GLFW/glfw3.h>
+
+#define GLM_FORCE_RADIANS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
 
 #include <iostream>
-#include "../include/GLFW/glfw3.h"
 
 int main() {
-    if (glfwVulkanSupported()) {
-        // check if vulkan is available
-        std::cout << "Vulkan available!";
-    }
+    glfwInit();
 
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
-    GLFWwindow* window = glfwCreateWindow(640, 480, "Glow Engine", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(800, 600, "Vulkan window", nullptr, nullptr);
 
-    VkSurfaceKHR surface;
-    VkResult err = glfwCreateWindowSurface(NULL, window, NULL, &surface);
-    if (err) {
-        // Window surface creation failed
-        std::cerr << "Window surface creation failed";
+    uint32_t extensionCount = 0;
+    vkEnumerateInstanceExtensionProperties(nullptr, &extensionCount, nullptr);
+
+    std::cout << extensionCount << " extensions supported\n";
+
+    while(!glfwWindowShouldClose(window)) {
+        glfwPollEvents();
     }
 
-     return 0;
+    glfwDestroyWindow(window);
+
+    glfwTerminate();
+
+    return 0;
 }
